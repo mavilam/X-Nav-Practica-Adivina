@@ -1,0 +1,49 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -3.6903750000000173,
+                    40.451585
+                ]
+            },
+            "properties": {
+                "name": "Santiago Bernabeu",
+                "tag": "Santiago Bernabeu"
+
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    11.624706999999944,
+                    48.2188
+                ]
+            },
+            "properties": {
+                "name": "Allianz Arena",
+                "tag": "Allianz arena"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -2.960829999999987,
+                    53.430829
+                ]
+            },
+            "properties": {
+                "name": "Anfield",
+                "tag": "Anfield,Liverpool"
+            }
+        }
+    ]
+        
+}

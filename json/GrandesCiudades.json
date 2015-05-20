@@ -1,0 +1,49 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.00594130000002,
+                    40.7127837
+                ]
+            },
+            "properties": {
+                "name": "New York",
+                "tag": "manhattan"
+
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.3522219000000177,
+                    48.856614
+                ]
+            },
+            "properties": {
+                "name": "Paris",
+                "tag": "Paris"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -3.7037901999999576,
+                    40.4167754
+                ]
+            },
+            "properties": {
+                "name": "Madrid",
+                "tag": "Madrid"
+            }
+        }
+    ]
+        
+}
