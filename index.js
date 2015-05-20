@@ -267,7 +267,7 @@ function getData(){
 	repo = ghObj.getRepo($("#user").val(), $("#repo").val());
 	repo.show(function(error,repo){
 		if (error) {
-			$("#blankSpace").append("<h3>Error: " + error.error + "</h3>");
+			$("#blankSpace").append("<h3>Error de lectura: " + error.error + "</h3>");
 	    } else {
 			$("#blankSpace").append("<p>Repo data:</p>" +
 				      "<ul><li>Full name: " + repo.full_name + "</li>" +
@@ -313,7 +313,11 @@ function selectFile() {
 };
 
 function readFile() {
+	alert("read");
     repo.read('master', $("#filename").val(), function(err, data) {
+    	if(error != null){
+    		alert(error);
+    	}
 		$("#content").val(data);
     });
 };
