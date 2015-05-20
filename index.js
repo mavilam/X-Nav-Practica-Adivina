@@ -142,8 +142,7 @@ function begin(){
 
 function beginGame(data){
 	
-	jsonMsg = JSON.parse(data);
-	console.log(jsonMsg.features);
+	jsonMsg = data;
 	begin();
 }
 
@@ -195,8 +194,6 @@ function prepareState(){
 function replace(){
 
 	prepareState();
-
-	console.log(state);
 
 	history.replaceState(state ,null,"game=" + gameName );
 	
@@ -345,7 +342,7 @@ function playImportGame(gameName){
 	state["import"] = true;
 	var gameNumber = parseInt(gameName.substring(6, 7)); 
 
-	beginGame(importGames["geo"][gameNumber]);
+	beginGame(JSON.parse(importGames["geo"][gameNumber]));
 
 }
 
