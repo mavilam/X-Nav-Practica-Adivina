@@ -296,13 +296,13 @@ function files() {
 				  "<div id='readwrite'>" +
 				  "<input type='text' name='filename' " +
 				  "id='filename' size='20' />" +
-				  "<button type='button' id='read'>" +
+				  "<button type='button' id='readGeo'>" +
 				  "Read File!</button><br>" +
 				  "<div><textarea name='content' " +
 				  "id='content' rows='4' cols='40'>" +
 				  "</textarea></div></div>");
             $("#files li").click(selectFile);
-			$("#read").click(readFile);
+			$("#readGeo").click(readFile);
          }
     });
 }
