@@ -143,7 +143,7 @@ function begin(){
 function beginGame(data){
 	
 	jsonMsg = data;
-	console.log(jsonMsg);
+	console.log(jsonMsg.features);
 	begin();
 }
 
