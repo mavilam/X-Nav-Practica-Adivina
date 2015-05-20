@@ -262,14 +262,14 @@ function readToken(){
 };
 
 function getData(){
-	console.log($("user").val());
-	console.log($("repo").val());
+	console.log($("#user").val());
+	console.log($("#repo").val());
 	repo = ghObj.getRepo($("#user").val(), $("#repo").val());
 	repo.show(function(error,repo){
 		if (error) {
-			$("#newForm").append("<h3>Error: " + error.error + "</h3>");
+			$("#blankSpace").append("<h3>Error: " + error.error + "</h3>");
 	    } else {
-			$("#newForm").append("<p>Repo data:</p>" +
+			$("#blankSpace").append("<p>Repo data:</p>" +
 				      "<ul><li>Full name: " + repo.full_name + "</li>" +
 				      "</ul><div id='files'></div>");
 			files();
