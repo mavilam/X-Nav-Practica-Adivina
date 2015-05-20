@@ -326,7 +326,6 @@ function readFile() {
 		$("#content").val(data);
 
 		importGames["geo"][importGames["count"]] = data;
-		console.log(importGames["geo"][importGames["count"]]);
 		$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
 		importGames["count"] ++;
 
@@ -346,6 +345,7 @@ function playImportGame(gameName){
 	registerGame();
 	state["import"] = true;
 	var gameNumber = parseInt(gameName.substring(6, 7)); 
+	console.log(importGames["geo"][gameNumber]);
 	beginGame(importGames["geo"][gameNumber]);
 
 }
