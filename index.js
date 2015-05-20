@@ -13,6 +13,10 @@ var historyID = 0;
 var locate;
 var marker;
 var fromHistory=false;
+var importGames = {
+	"count": 0,
+	"geo":[]
+}
 
 function resetCarousel(){
 	$('.carousel-inner').html("");
@@ -151,12 +155,11 @@ function resetGame(){
 }
 
 function registerGame(){
-	console.log(points);
-	console.log(gameName);
 	state={
 		"points":points,
 		"count" : 0,
 		"displayPoints": [],
+		"import": false,
 		"name":gameName
 	};
 	history.pushState(state ,null,"game=" + gameName);
@@ -183,6 +186,7 @@ function prepareState(){
 	state["locate"] = locate;
 	state["game"] = gameName;
 	state["gameFinished"] = gameFinished;
+	state["geo"] = jsonMsg;
 }
 
 function replace(){
@@ -229,6 +233,7 @@ function setState(event){
     locate = event.state.locate;
     gameName = event.state.game;
     gameFinished = event.state.gameFinished;
+    jsonMsg = event.state.geo;
     fromHistory = true;
     /*if($("#" + historyID).length != 0) {
 	  $("#" + historyID).remove();
@@ -289,15 +294,15 @@ function files() {
             for (var i = 0; i < len; i++) {
                 files.push(contents[i].name);
             }
-            repoList.html("<li>" + 
+            repoList.html("<ul><li>" + 
                 files.join("</li><li>") +
                 "</li>"+
-                "</li></ul>" +
+                "</li></ul></ul>" +
 				  "<div id='readwrite'>" +
 				  "<input type='text' name='filename' " +
 				  "id='filename' size='20' />" +
 				  "<button type='button' id='readGeo'>" +
-				  "Read File!</button><br>" +
+				  "Lee</button><br>" +
 				  "<div><textarea name='content' " +
 				  "id='content' rows='4' cols='40'>" +
 				  "</textarea></div></div>");
@@ -319,6 +324,12 @@ function readFile() {
     		alert(error);
     	}
 		$("#content").val(data);
+
+		importGames["geo"][importGames["count"]] = data;
+		$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
+
+		importGames["count"] ++;
+
     });
 };
 
@@ -331,6 +342,23 @@ function signIn(){
     });
 }
 
+function playImportGame(gameName){
+	registerGame();
+	state["import"] = true;
+	var gameNumber = parseInt(gameName.substring(6, 7)); 
+	beginGame(importGames["geo"][gameNumber]);
+
+}
+
+/*function lee(){
+	$.getJSON( "json/Estadios.json", function( data ) {
+				importGames["geo"][importGames["count"]] = data;
+			$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
+
+			importGames["count"] ++;
+			console.log(importGames);
+	});
+}*/
 
 $(document).ready(function() {
 
@@ -363,20 +391,27 @@ $(document).ready(function() {
 		}
 
 		resetGame();
-		gameName = $("#gameOptions option:selected").val();
-		var game = "/json/" + gameName + ".json";
-		registerGame();
+
 		var interval = $("#gameDifficulty option:selected").val();
-		
+			
 		$('.carousel').on("slide.bs.carousel", function (e){
-	        $('.carousel').data("bs.carousel").options.interval =  interval;
-    	});
-		fromHistory = false;
+		    $('.carousel').data("bs.carousel").options.interval =  interval;
+	    });
+	    fromHistory = false;
 		firstTime = false;
 
-		$.getJSON( game, function( data ) {
-			beginGame(data);
-	    });
+		gameName = $("#gameOptions option:selected").val();
+		if(gameName.substring(0, 6) == "import"){
+			playImportGame(gameName);
+		}else{
+			var game = "/json/" + gameName + ".json";
+			registerGame();
+			
+			$.getJSON( game, function( data ) {
+				beginGame(data);
+		    });
+		}
+		
 		
 	});
 
@@ -396,4 +431,8 @@ $(document).ready(function() {
 
 	    signIn();
 	});
+
+	/*$("#readaa").click(function(){
+		lee();
+	});*/
 });
