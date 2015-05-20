@@ -1,0 +1,42 @@
+
+#map {
+	
+    height: 380px;
+    width: 700px;
+}
+
+#myCarousel{
+	height: 250px;
+	width: 350px;
+}
+
+.control{
+	
+	margin-top: 10px;
+	border-radius: 10px;
+	border: 1px solid transparent;
+	color: #31708f;
+  	background-color: #d9edf7;
+  	border-color: #bce8f1;
+}
+
+h1{
+	text-align: center;
+	color: #000;
+	font-family: 'Raleway',sans-serif;
+	font-size: 62px;
+	font-weight: 800;
+	line-height: 72px;
+	margin: 0 0 14px; 
+	text-transform: uppercase; 
+}
+
+#pControl{
+	text-align: center;
+	height: 150px;
+	margin-bottom: 10px;
+}
+
+#history{
+	overflow: auto;
+}
