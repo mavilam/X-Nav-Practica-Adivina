@@ -142,7 +142,7 @@ function begin(){
 
 function beginGame(data){
 	
-	jsonMsg = JSON.stringify(data);
+	jsonMsg = JSON.parse(data);
 	console.log(jsonMsg.features);
 	begin();
 }
