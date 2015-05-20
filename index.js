@@ -140,6 +140,7 @@ function begin(){
 }
 
 function beginGame(data){
+	console.log(data);
 	jsonMsg = data;
 	begin();
 }
@@ -303,9 +304,7 @@ function files() {
 				  "id='filename' size='20' />" +
 				  "<button type='button' id='readGeo'>" +
 				  "Lee</button><br>" +
-				  "<div><textarea name='content' " +
-				  "id='content' rows='4' cols='40'>" +
-				  "</textarea></div></div>");
+				  "</div>");
             $("#files li").click(selectFile);
 			$("#readGeo").click(readFile);
          }
@@ -323,8 +322,6 @@ function readFile() {
     	if(err != null){
     		alert(error);
     	}
-		$("#content").val(data);
-
 		importGames["geo"][importGames["count"]] = data;
 		$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
 		importGames["count"] ++;
@@ -345,7 +342,7 @@ function playImportGame(gameName){
 	registerGame();
 	state["import"] = true;
 	var gameNumber = parseInt(gameName.substring(6, 7)); 
-	console.log(importGames["geo"][gameNumber]);
+
 	beginGame(importGames["geo"][gameNumber]);
 
 }
