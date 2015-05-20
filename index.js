@@ -129,6 +129,7 @@ function transition(e){
 }
 
 function begin(){
+	console.log(jsonMsg);
 	var lat = jsonMsg.features[ngame].geometry.coordinates[1];
 	var lon = jsonMsg.features[ngame].geometry.coordinates[0];
     	
@@ -140,8 +141,9 @@ function begin(){
 }
 
 function beginGame(data){
-	console.log(data);
+	
 	jsonMsg = data;
+	console.log(jsonMsg);
 	begin();
 }
 
