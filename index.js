@@ -313,9 +313,9 @@ function selectFile() {
 };
 
 function readFile() {
-	alert("read");
+
     repo.read('master', $("#filename").val(), function(err, data) {
-    	if(error != null){
+    	if(err != null){
     		alert(error);
     	}
 		$("#content").val(data);
