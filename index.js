@@ -326,8 +326,8 @@ function readFile() {
 		$("#content").val(data);
 
 		importGames["geo"][importGames["count"]] = data;
+		console.log(importGames["geo"][importGames["count"]]);
 		$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
-
 		importGames["count"] ++;
 
     });
@@ -401,6 +401,7 @@ $(document).ready(function() {
 		firstTime = false;
 
 		gameName = $("#gameOptions option:selected").val();
+		
 		if(gameName.substring(0, 6) == "import"){
 			playImportGame(gameName);
 		}else{
