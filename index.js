@@ -401,11 +401,11 @@ $(document).ready(function() {
 		firstTime = false;
 
 		gameName = $("#gameOptions option:selected").val();
-		
+
 		if(gameName.substring(0, 6) == "import"){
 			playImportGame(gameName);
 		}else{
-			var game = "/json/" + gameName + ".json";
+			var game = "json/" + gameName + ".json";
 			registerGame();
 			
 			$.getJSON( game, function( data ) {
