@@ -3,7 +3,7 @@ var map;
 var solLoc;
 var jsonMsg;
 var points = 0;
-var currentIndex;
+var photograhps = 0;
 var gameFinished = false;
 var gameName;
 var firstTime = true;
@@ -12,7 +12,9 @@ var tag;
 var historyID = 0;
 var locate;
 var marker;
+var played = 0;
 var fromHistory=false;
+var useState = false;
 var importGames = {
 	"count": 0,
 	"geo":[]
@@ -22,7 +24,7 @@ function resetCarousel(){
 	$('.carousel-inner').html("");
 
 	html = "<div class='item active'>";
-    html += "<img src="+"http://blog.popplaces.com/wp-content/uploads/2014/09/welcome.jpg"+" >";
+    html += "<img src="+"http://www.soarselling.com/wp-content/uploads/2012/10/areyoureadybrain-460x355.jpg"+" >";
     html += "<div class='container'>";
     html += "<div class='carousel-caption'>";
     html += "</div></div></div></div>";
@@ -75,9 +77,9 @@ function readyMap(){
 
 function calculatePoints(distance,pics){
 	if(distance > 2500 && distance < 6000){
-		return - distance * pics;
+		return - Math.round(distance/100) * pics;
 	}else if(distance > 6000){
-		return - 2500;
+		return - 60*pics;
 	}else{
 		return Math.round((2500 - distance)/pics);
 	}
@@ -98,15 +100,16 @@ function transition(e){
 	if(!gameFinished){
 
 		var distance = Math.round(e.latlng.distanceTo(solLoc)/1000);
-		var prePoints = calculatePoints(distance, currentIndex);
+		var prePoints = calculatePoints(distance, photograhps);
 
 		solMap();
 
 		points += prePoints;
-		var result = "<p>Distancia " + distance + "km " + currentIndex + " fotos = " + prePoints + " puntos</p>";
+		var result = "<p>Distancia " + distance + "km " + photograhps + " fotos = " + prePoints + " puntos</p>";
 
 		state["displayPoints"][state["count"]] = result;
 		state["count"] ++;
+		console.log("stateeeeee@@@@@");
 		console.log(state);
 
 		$("#points").append(result);
@@ -130,19 +133,21 @@ function transition(e){
 
 function begin(){
 	console.log(jsonMsg);
-	var lat = jsonMsg.features[ngame].geometry.coordinates[1];
-	var lon = jsonMsg.features[ngame].geometry.coordinates[0];
+	var gameNumber = Math.floor(Math.random() * jsonMsg.features.length);
+	var lat = jsonMsg.features[gameNumber].geometry.coordinates[1];
+	var lon = jsonMsg.features[gameNumber].geometry.coordinates[0];
     	
     solLoc = L.latLng(lat, lon);
-    locate = jsonMsg.features[ngame].properties.name;
-    tag = jsonMsg.features[ngame].properties.tag;
-    console.log(jsonMsg.features[ngame].properties);
+    locate = jsonMsg.features[gameNumber].properties.name;
+    tag = jsonMsg.features[gameNumber].properties.tag;
+    console.log(jsonMsg.features[gameNumber].properties);
     getImgs(tag);
 }
 
 function beginGame(data){
 	
 	jsonMsg = data;
+	photograhps = 0;
 	begin();
 }
 
@@ -150,13 +155,14 @@ function resetGame(){
 	marker.setOpacity(0);
 	map.setView([0, 0], 1);
 	resetCarousel();
+	photograhps = 0;
 	points = 0;
 	ngame = 0;
 	gameFinished = false;
 	$("#points").empty();
 }
 
-function registerGame(){
+function resetState(){
 	state={
 		"points":points,
 		"count" : 0,
@@ -164,6 +170,19 @@ function registerGame(){
 		"import": false,
 		"name":gameName
 	};
+}
+
+function registerGame(){
+
+	resetState();
+
+	if(historyID != played){
+		var less = played -historyID;
+		alert("va el histoy " + less + " played " + played + " histoy " + historyID);
+		historyID = played;
+		useState = false;
+		history.go(less);
+	}
 	history.pushState(state ,null,"game=" + gameName);
 	console.log(state);
 
@@ -196,28 +215,39 @@ function replace(){
 	prepareState();
 
 	history.replaceState(state ,null,"game=" + gameName );
-	
-	$("#history").append('<a class="history" id="' + historyID + '" >'+gameName+ ' ' + time() + ' ' + points +'</a><br/>');
+	console.log("$$$$" + gameName);
+	console.log(state);
+	$("#history").append('<li class="history" id="' + played + '">'+gameName+ ' ' + time() + ' ' + points +'</li>');
 	
 
-	$("#"+historyID).click(function(){
-		var id = $(this).attr("id"); 
-		historyFunction(id);
+	$("#"+played).click(function(){
+		firstTime = true;
+		var p = $(this).attr("id"); 
+		historyFunction(p);
 	});
-	historyID ++;
+
+
 }
 
-function historyFunction(id){
+function historyFunction(p){
 
-	var go = id - historyID;
-	alert(go + " " + id + " " + historyID);
-	historyID = go;
+	var go = p - historyID;
+	
+	historyID = p;
+	alert(go + " estado " + p + " estado total " + historyID);
+	/*if($("#" + p).length != 0) {
+	  $("#" + p).remove();
+	}*/
 	
 	if(go != 0){
 		if(fromHistory){
-			registerGame();
+			console.log("preparo y reemplazo");
+			prepareState();
+			console.log(state);
+			history.replaceState(state ,null,"game=" + gameName );
 		}
-		replace();
+		fromHistory = true;
+		useState = true;
 		history.go(go);
 	}else{
 		alert("Ya estas en ese juego");
@@ -225,7 +255,8 @@ function historyFunction(id){
 }
 
 function setState(event){
-
+	console.log("event############");
+	console.log(event.state);
 	ngame = event.state.count;
     solLoc = event.state.loc;
     tag = event.state.tag;
@@ -234,14 +265,14 @@ function setState(event){
     gameName = event.state.game;
     gameFinished = event.state.gameFinished;
     jsonMsg = event.state.geo;
-    fromHistory = true;
-    /*if($("#" + historyID).length != 0) {
-	  $("#" + historyID).remove();
-	  alert("bbbb");
-	}else{
-		alert("a");
-	}*/
-
+    resetState();
+    state["displayPoints"]= event.state.displayPoints;
+	state["count"] = event.state.count;
+    if(ngame == 3){
+		alert("Se comienza el juego de nuevo");
+		ngame = 0;
+		resetGame();
+	}
 }
 
 //// PARTE LEER REPO DE GITHUB
@@ -346,36 +377,34 @@ function playImportGame(gameName){
 
 }
 
-/*function lee(){
-	$.getJSON( "json/Estadios.json", function( data ) {
-				importGames["geo"][importGames["count"]] = data;
-			$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
-
-			importGames["count"] ++;
-			console.log(importGames);
-	});
-}*/
-
 $(document).ready(function() {
+	//Cambia el tamaño si es para móviles
+	if($(window).width()<980){
+        $('#map').css("height", ($(window).height() /2));    
+        $('#map').css("width", ($(window).width() /(1.1)));
+        $('.carousel').css("height", ($(window).height() /2));    
+        $('.carousel').css("width", ($(window).width() /(1.1)));
 
+    }
 
 	window.addEventListener('popstate', function(event) {
 
-        alert("JUEGO REANUDADO!");
+       if(useState){
+	       	 alert("JUEGO REANUDADO!");
 
-        $("#points").empty();
-        for(i = 0 ; i<event.state.displayPoints.length ; i++){
-        	$("#points").append(event.state.displayPoints[i]);
-        }
-        setState(event);
-        resetCarousel();
-        getImgs(tag);
-
-
+		    $("#points").empty();
+		    for(i = 0 ; i<event.state.displayPoints.length ; i++){
+		        $("#points").append(event.state.displayPoints[i]);
+		    }
+		    setState(event);
+		    resetCarousel();
+		    getImgs(tag);
+       }
+      
     });
 
 	$('.carousel').bind('slide.bs.carousel', function (e) {
-	    currentIndex = $('div.active').index() + 1;
+	    photograhps ++;
 	});
 
 	readyMap();
@@ -385,11 +414,18 @@ $(document).ready(function() {
 		if(!firstTime){
 			replace();
 		}
+		if(!fromHistory){
+			resetGame();
+		}else{
 
-		resetGame();
+			prepareState();
+			history.replaceState(state ,null,"game=" + gameName );
+		}
+		
 
 		var interval = $("#gameDifficulty option:selected").val();
-			
+		historyID ++;
+		played ++;	
 		$('.carousel').on("slide.bs.carousel", function (e){
 		    $('.carousel').data("bs.carousel").options.interval =  interval;
 	    });
@@ -428,6 +464,23 @@ $(document).ready(function() {
 
 	    signIn();
 	});
+
+	$('.pop').click(function(event) {
+	    var width  = 575,
+	        height = 400,
+	        left   = ($(window).width()  - width)  / 2,
+	        top    = ($(window).height() - height) / 2,
+	        url    = "https://twitter.com/intent/tweet?text=¿Cuánto sabes de geografía? ¡Pruéba! http://mavilam.github.io/X-Nav-Practica-Adivina/ ",
+	        opts   = 'status=1' +
+	                 ',width='  + width  +
+	                 ',height=' + height +
+	                 ',top='    + top    +
+	                 ',left='   + left;
+	    
+	    window.open(url, 'twitter', opts);
+	 
+	    return false;
+  });
 
 	/*$("#readaa").click(function(){
 		lee();
