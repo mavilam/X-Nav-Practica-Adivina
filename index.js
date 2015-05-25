@@ -353,12 +353,7 @@ function readFile() {
 };
 
 function signIn(){
-	access = hello("github");
-    access.login({response_type: 'code'}).then( function(){
-		readToken();
-    }, function( e ){
-		alert('Signin error: ' + e.error.message);
-    });
+	
 }
 
 function playImportGame(gameName){
@@ -455,7 +450,12 @@ $(document).ready(function() {
 			scope : "publish_files",
 	    });
 
-	    signIn();
+	    access = hello("github");
+		    access.login({response_type: 'code'}).then( function(){
+				readToken();
+		    }, function( e ){
+				alert('Signin error: ' + e.error.message);
+		    });
 	});
 
 
