@@ -291,7 +291,8 @@ function readToken(){
 };
 
 function getData(){
-
+	console.log($("#user").val());
+	console.log($("#repo").val());
 	repo = ghObj.getRepo($("#user").val(), $("#repo").val());
 	repo.show(function(error,repo){
 		if (error) {
@@ -457,12 +458,13 @@ $(document).ready(function() {
 	    signIn();
 	});
 
+
 	$('.pop').click(function(event) {
 	    var width  = 575,
 	        height = 400,
 	        left   = ($(window).width()  - width)  / 2,
 	        top    = ($(window).height() - height) / 2,
-	        url    = "https://twitter.com/intent/tweet?text=¿Cuánto sabes de geografía? ¡Pruéba! http://mavilam.github.io/X-Nav-Practica-Adivina/ ",
+	        url    = "https://twitter.com/intent/tweet?text=¡Prueba! http://mavilam.github.io/X-Nav-Practica-Adivina/ ",
 	        opts   = 'status=1' +
 	                 ',width='  + width  +
 	                 ',height=' + height +
@@ -474,7 +476,5 @@ $(document).ready(function() {
 	    return false;
   });
 
-	/*$("#readaa").click(function(){
-		lee();
-	});*/
+
 });
