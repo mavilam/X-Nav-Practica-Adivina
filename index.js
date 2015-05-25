@@ -269,9 +269,9 @@ function setState(event){
 }
 
 //// PARTE LEER REPO DE GITHUB
-var newForm = "<input type='text'id='user' />" +
-    "<input type='text' id='repo' />" +
-    "<button type='button' id='dataButton'>Lee</button>" ;
+var newForm = "<input type='text'id='user' value='User' />" +
+    "<input type='text' id='repo' value='Repo' />" +
+    "<button type='button' class='btn btn-default' id='dataButton'>Lee</button>" ;
 var repo;
 var ghObj;
 
@@ -324,8 +324,8 @@ function files() {
                 "</li></ul></ul>" +
 				  "<div id='readwrite'>" +
 				  "<input type='text' name='filename' " +
-				  "id='filename' size='20' />" +
-				  "<button type='button' id='readGeo'>" +
+				  "id='filename' value='Repo' size='20' />" +
+				  "<button type='button' class='btn btn-default' id='readGeo'>" +
 				  "Lee</button><br>" +
 				  "</div>");
             $("#files li").click(selectFile);
@@ -450,7 +450,7 @@ $(document).ready(function() {
 		hello.init({
 			github : "cd7198e82aa5a52743ce"
 	    },{
-			redirect_uri : 'http://mavilam.github.io/X-Nav-OAuth-GitHub-Fichero/redirect.html',
+			redirect_uri : 'http://mavilam.github.io/X-Nav-Practica-Adivina/redirect.html',
 			oauth_proxy : "https://auth-server.herokuapp.com/proxy",
 			scope : "publish_files",
 	    });
