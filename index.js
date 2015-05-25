@@ -450,7 +450,7 @@ $(document).ready(function() {
 		hello.init({
 			github : "cd7198e82aa5a52743ce"
 	    },{
-			redirect_uri : 'http://mavilam.github.io/X-Nav-Practica-Adivina/redirect.html',
+			redirect_uri : 'http://mavilam.github.io/X-Nav-OAuth-GitHub-Fichero/redirect.html',
 			oauth_proxy : "https://auth-server.herokuapp.com/proxy",
 			scope : "publish_files",
 	    });
