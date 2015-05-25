@@ -448,7 +448,7 @@ $(document).ready(function() {
 
 	$("#read").click(function(){
 		hello.init({
-			github : "178bbf1a96ea6ca75380"
+			github : "addc64a9121e96235f3f"
 	    },{
 			redirect_uri : 'redirect.html',
 			oauth_proxy : "https://auth-server.herokuapp.com/proxy",
