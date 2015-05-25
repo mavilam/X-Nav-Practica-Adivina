@@ -24,7 +24,7 @@ function resetCarousel(){
 	$('.carousel-inner').html("");
 
 	html = "<div class='item active'>";
-    html += "<img src='/img/AreYouReady.jpg'>";
+    html += "<img src='img/AreYouReady.jpg'>";
     html += "<div class='container'>";
     html += "<div class='carousel-caption'>";
     html += "</div></div></div></div>";
@@ -33,7 +33,7 @@ function resetCarousel(){
 }
 
 function getImgs(tag){
-	console.log(tag);
+
 	$.getJSON("https://api.flickr.com/services/feeds/photos_public.gne?tags="
 		+tag+"&tagmode=any&format=json&jsoncallback=?",function(data){
 
@@ -109,14 +109,13 @@ function transition(e){
 
 		state["displayPoints"][state["count"]] = result;
 		state["count"] ++;
-		console.log("stateeeeee@@@@@");
+		
 		console.log(state);
 
 		$("#points").append(result);
 		
 		ngame ++;
 
-		console.log(jsonMsg.features.length + " " + ngame);
 		if(ngame>=3){
 			
 			alert("Fin del juego has conseguido " + points + " puntos!");
@@ -132,7 +131,7 @@ function transition(e){
 }
 
 function begin(){
-	console.log(jsonMsg);
+	
 	var gameNumber = Math.floor(Math.random() * jsonMsg.features.length);
 	var lat = jsonMsg.features[gameNumber].geometry.coordinates[1];
 	var lon = jsonMsg.features[gameNumber].geometry.coordinates[0];
@@ -140,7 +139,7 @@ function begin(){
     solLoc = L.latLng(lat, lon);
     locate = jsonMsg.features[gameNumber].properties.name;
     tag = jsonMsg.features[gameNumber].properties.tag;
-    console.log(jsonMsg.features[gameNumber].properties);
+    
     getImgs(tag);
 }
 
@@ -178,7 +177,7 @@ function registerGame(){
 
 	if(historyID != played){
 		var less = played -historyID;
-		alert("va el histoy " + less + " played " + played + " histoy " + historyID);
+		
 		historyID = played;
 		useState = false;
 		history.go(less);
@@ -215,8 +214,7 @@ function replace(){
 	prepareState();
 
 	history.replaceState(state ,null,"game=" + gameName );
-	console.log("$$$$" + gameName);
-	console.log(state);
+
 	$("#history").append('<li class="history" id="' + played + '">'+gameName+ ' ' + time() + ' ' + points +'</li>');
 	
 
@@ -234,16 +232,12 @@ function historyFunction(p){
 	var go = p - historyID;
 	
 	historyID = p;
-	alert(go + " estado " + p + " estado total " + historyID);
-	/*if($("#" + p).length != 0) {
-	  $("#" + p).remove();
-	}*/
 	
 	if(go != 0){
 		if(fromHistory){
-			console.log("preparo y reemplazo");
+			
 			prepareState();
-			console.log(state);
+			
 			history.replaceState(state ,null,"game=" + gameName );
 		}
 		fromHistory = true;
@@ -255,8 +249,7 @@ function historyFunction(p){
 }
 
 function setState(event){
-	console.log("event############");
-	console.log(event.state);
+
 	ngame = event.state.count;
     solLoc = event.state.loc;
     tag = event.state.tag;
@@ -298,8 +291,7 @@ function readToken(){
 };
 
 function getData(){
-	console.log($("#user").val());
-	console.log($("#repo").val());
+
 	repo = ghObj.getRepo($("#user").val(), $("#repo").val());
 	repo.show(function(error,repo){
 		if (error) {
