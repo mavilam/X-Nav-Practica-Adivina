@@ -24,7 +24,7 @@ function resetCarousel(){
 	$('.carousel-inner').html("");
 
 	html = "<div class='item active'>";
-    html += "<img src="+"http://www.soarselling.com/wp-content/uploads/2012/10/areyoureadybrain-460x355.jpg"+" >";
+    html += "<img src='/img/AreYouReady.jpg'>";
     html += "<div class='container'>";
     html += "<div class='carousel-caption'>";
     html += "</div></div></div></div>";

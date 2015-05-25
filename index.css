@@ -1,3 +1,6 @@
+body{
+	background-color: #232323;
+}
 
 #map {
 	
@@ -14,16 +17,21 @@
 	
 	margin-top: 10px;
 	border-radius: 10px;
-	border: 1px solid transparent;
-	color: #31708f;
-  	background-color: #d9edf7;
-  	border-color: #bce8f1;
+	border: 3px solid transparent;
+	color: #f7484e;
+  	background-color: #303030;
+  	border-color: #999999;
+}
+
+a{
+	display: inline;
+	color: #f7484e;
 }
 
 h1{
 	text-align: center;
-	color: #000;
-	font-family: 'Raleway',sans-serif;
+	color: #f7484e;
+	font-family: 'Merriweather', serif;
 	font-size: 62px;
 	font-weight: 800;
 	line-height: 72px;
@@ -39,4 +47,13 @@ h1{
 
 #history{
 	overflow: auto;
+	cursor: pointer;
+}
+
+#controlButtons{
+	padding: 3px;
+}
+
+h5{
+	font-weight: bold;
 }
