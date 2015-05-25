@@ -355,7 +355,7 @@ function readFile() {
 function signIn(){
 	access = hello("github");
     access.login({response_type: 'code'}).then( function(){
-		getToken();
+		readToken();
     }, function( e ){
 		alert('Signin error: ' + e.error.message);
     });
