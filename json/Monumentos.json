@@ -6,13 +6,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -3.6903750000000173,
-                    40.451585
+                    -3.7177689999999757,
+                    40.424022
                 ]
             },
             "properties": {
-                "name": "Santiago Bernabeu",
-                "tag": "Santiago Bernabeu, madrid"
+                "name": "Templo de Debod",
+                "tag": "debod, tempo debod, templo de debod"
 
             }
         },
@@ -21,13 +21,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    11.624706999999944,
-                    48.2188
+                    -89.57687720000001,
+                    20.9635537
                 ]
             },
             "properties": {
-                "name": "Allianz Arena",
-                "tag": "Allianz arena"
+                "name": "Chichen Itza",
+                "tag": "Chichen Itza,merida"
             }
         },
         {
@@ -35,13 +35,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -2.960829999999987,
-                    53.430829
+                    37.62308699999994,
+                    55.752523
                 ]
             },
             "properties": {
-                "name": "Anfield",
-                "tag": "Anfield,Liverpool"
+                "name": "Catedral de San Basilio",
+                "tag": "San Basilio"
             }
         },
         {
@@ -49,13 +49,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.926174,
-                    40.829643
+                    2.294481000000019,
+                    48.85837
                 ]
             },
             "properties": {
-                "name": "Yankee Stadium",
-                "tag": "Yankee Stadium,yankee"
+                "name": "Torre Eiffel",
+                "tag": "Eiffel tower, paris"
             }
         },
         {
@@ -63,13 +63,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -58.364756,
-                    -34.635611
+                    31.132495000000063,
+                    29.977296
                 ]
             },
             "properties": {
-                "name": "La Bombonera",
-                "tag": "Bombonera,Boca juniors"
+                "name": "Pirámides de Giza",
+                "tag": "Egypt, pyramids"
             }
         },
         {
@@ -77,13 +77,13 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -43.226166199999966,
-                    -22.9127036
+                    27.175015,
+                    78.04215499999998
                 ]
             },
             "properties": {
-                "name": "Maracana",
-                "tag": "Maracana,Brasil"
+                "name": "Taj Mahal",
+                "tag": "Taj Mahal"
             }
         },
         {
@@ -91,13 +91,27 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -0.3048409000000447,
-                    51.550501
+                    40.4319077,
+                    116.57037489999993
                 ]
             },
             "properties": {
-                "name": "Wembley",
-                "tag": "Wembley,Arsenal"
+                "name": "Muralla China",
+                "tag": "Great Wall of China, China,"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -43.210487,
+                    -22.951916
+                ]
+            },
+            "properties": {
+                "name": "Cristo Redentor",
+                "tag": "Redeemer"
             }
         }
     ]

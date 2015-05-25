@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "name": "Open Web App",
+  "description": "Juego sobre conocimiento geográfico",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/img/Search-icon.png",
+    "48": "/img/Search-icon.png",
+    "128": "/img/Search-icon.png"
+  },
+  "developer": {
+    "name": "Miguel Ávila Monroy",
+    "url": "https://github.com/mavilam"
+  },
+  "locales": {
+    "en": {
+      "description": "Geographic game",
+      "developer": {
+        "url": "https://github.com/mavilam"
+      }
+    }
+  },
+  "permissions" : {
+    "geolocation" : {
+      "description" : "Access to your position"
+    }
+  },
+  "chrome" : {
+    "navigation" : true
+  },
+  "default_locale": "en"
+}

@@ -3,7 +3,7 @@ var map;
 var solLoc;
 var jsonMsg;
 var points = 0;
-var currentIndex;
+var photograhps = 0;
 var gameFinished = false;
 var gameName;
 var firstTime = true;
@@ -12,13 +12,19 @@ var tag;
 var historyID = 0;
 var locate;
 var marker;
+var played = 0;
 var fromHistory=false;
+var useState = false;
+var importGames = {
+	"count": 0,
+	"geo":[]
+}
 
 function resetCarousel(){
 	$('.carousel-inner').html("");
 
 	html = "<div class='item active'>";
-    html += "<img src="+"http://blog.popplaces.com/wp-content/uploads/2014/09/welcome.jpg"+" >";
+    html += "<img src='img/AreYouReady.jpg'>";
     html += "<div class='container'>";
     html += "<div class='carousel-caption'>";
     html += "</div></div></div></div>";
@@ -27,7 +33,7 @@ function resetCarousel(){
 }
 
 function getImgs(tag){
-	console.log(tag);
+
 	$.getJSON("https://api.flickr.com/services/feeds/photos_public.gne?tags="
 		+tag+"&tagmode=any&format=json&jsoncallback=?",function(data){
 
@@ -71,9 +77,9 @@ function readyMap(){
 
 function calculatePoints(distance,pics){
 	if(distance > 2500 && distance < 6000){
-		return - distance * pics;
+		return - Math.round(distance/100) * pics;
 	}else if(distance > 6000){
-		return - 2500;
+		return - 60*pics;
 	}else{
 		return Math.round((2500 - distance)/pics);
 	}
@@ -94,22 +100,22 @@ function transition(e){
 	if(!gameFinished){
 
 		var distance = Math.round(e.latlng.distanceTo(solLoc)/1000);
-		var prePoints = calculatePoints(distance, currentIndex);
+		var prePoints = calculatePoints(distance, photograhps);
 
 		solMap();
 
 		points += prePoints;
-		var result = "<p>Distancia " + distance + "km " + currentIndex + " fotos = " + prePoints + " puntos</p>";
+		var result = "<p>Distancia " + distance + "km " + photograhps + " fotos = " + prePoints + " puntos</p>";
 
 		state["displayPoints"][state["count"]] = result;
 		state["count"] ++;
+		
 		console.log(state);
 
 		$("#points").append(result);
 		
 		ngame ++;
 
-		console.log(jsonMsg.features.length + " " + ngame);
 		if(ngame>=3){
 			
 			alert("Fin del juego has conseguido " + points + " puntos!");
@@ -125,18 +131,22 @@ function transition(e){
 }
 
 function begin(){
-	var lat = jsonMsg.features[ngame].geometry.coordinates[1];
-	var lon = jsonMsg.features[ngame].geometry.coordinates[0];
+	
+	var gameNumber = Math.floor(Math.random() * jsonMsg.features.length);
+	var lat = jsonMsg.features[gameNumber].geometry.coordinates[1];
+	var lon = jsonMsg.features[gameNumber].geometry.coordinates[0];
     	
     solLoc = L.latLng(lat, lon);
-    locate = jsonMsg.features[ngame].properties.name;
-    tag = jsonMsg.features[ngame].properties.tag;
-    console.log(jsonMsg.features[ngame].properties);
+    locate = jsonMsg.features[gameNumber].properties.name;
+    tag = jsonMsg.features[gameNumber].properties.tag;
+    
     getImgs(tag);
 }
 
 function beginGame(data){
+	
 	jsonMsg = data;
+	photograhps = 0;
 	begin();
 }
 
@@ -144,21 +154,34 @@ function resetGame(){
 	marker.setOpacity(0);
 	map.setView([0, 0], 1);
 	resetCarousel();
+	photograhps = 0;
 	points = 0;
 	ngame = 0;
 	gameFinished = false;
 	$("#points").empty();
 }
 
-function registerGame(){
-	console.log(points);
-	console.log(gameName);
+function resetState(){
 	state={
 		"points":points,
 		"count" : 0,
 		"displayPoints": [],
+		"import": false,
 		"name":gameName
 	};
+}
+
+function registerGame(){
+
+	resetState();
+
+	if(historyID != played){
+		var less = played -historyID;
+		
+		historyID = played;
+		useState = false;
+		history.go(less);
+	}
 	history.pushState(state ,null,"game=" + gameName);
 	console.log(state);
 
@@ -183,37 +206,42 @@ function prepareState(){
 	state["locate"] = locate;
 	state["game"] = gameName;
 	state["gameFinished"] = gameFinished;
+	state["geo"] = jsonMsg;
 }
 
 function replace(){
 
 	prepareState();
 
-	console.log(state);
-
 	history.replaceState(state ,null,"game=" + gameName );
-	
-	$("#history").append('<a class="history" id="' + historyID + '" >'+gameName+ ' ' + time() + ' ' + points +'</a><br/>');
+
+	$("#history").append('<li class="history" id="' + played + '">'+gameName+ ' ' + time() + ' ' + points +'</li>');
 	
 
-	$("#"+historyID).click(function(){
-		var id = $(this).attr("id"); 
-		historyFunction(id);
+	$("#"+played).click(function(){
+		firstTime = true;
+		var p = $(this).attr("id"); 
+		historyFunction(p);
 	});
-	historyID ++;
+
+
 }
 
-function historyFunction(id){
+function historyFunction(p){
 
-	var go = id - historyID;
-	alert(go + " " + id + " " + historyID);
-	historyID = go;
+	var go = p - historyID;
+	
+	historyID = p;
 	
 	if(go != 0){
 		if(fromHistory){
-			registerGame();
+			
+			prepareState();
+			
+			history.replaceState(state ,null,"game=" + gameName );
 		}
-		replace();
+		fromHistory = true;
+		useState = true;
 		history.go(go);
 	}else{
 		alert("Ya estas en ese juego");
@@ -229,20 +257,21 @@ function setState(event){
     locate = event.state.locate;
     gameName = event.state.game;
     gameFinished = event.state.gameFinished;
-    fromHistory = true;
-    /*if($("#" + historyID).length != 0) {
-	  $("#" + historyID).remove();
-	  alert("bbbb");
-	}else{
-		alert("a");
-	}*/
-
+    jsonMsg = event.state.geo;
+    resetState();
+    state["displayPoints"]= event.state.displayPoints;
+	state["count"] = event.state.count;
+    if(ngame == 3){
+		alert("Se comienza el juego de nuevo");
+		ngame = 0;
+		resetGame();
+	}
 }
 
 //// PARTE LEER REPO DE GITHUB
-var newForm = "<input type='text'id='user' />" +
-    "<input type='text' id='repo' />" +
-    "<button type='button' id='dataButton'>Lee</button>" ;
+var newForm = "<input type='text'id='user' value='User' />" +
+    "<input type='text' id='repo' value='Repo' />" +
+    "<button type='button' class='btn btn-default' id='dataButton'>Lee</button>" ;
 var repo;
 var ghObj;
 
@@ -262,14 +291,14 @@ function readToken(){
 };
 
 function getData(){
-	console.log($("user").val());
-	console.log($("repo").val());
+	console.log($("#user").val());
+	console.log($("#repo").val());
 	repo = ghObj.getRepo($("#user").val(), $("#repo").val());
 	repo.show(function(error,repo){
 		if (error) {
-			$("#newForm").append("<h3>Error: " + error.error + "</h3>");
+			$("#blankSpace").append("<h3>Error de lectura: " + error.error + "</h3>");
 	    } else {
-			$("#newForm").append("<p>Repo data:</p>" +
+			$("#blankSpace").append("<p>Repo data:</p>" +
 				      "<ul><li>Full name: " + repo.full_name + "</li>" +
 				      "</ul><div id='files'></div>");
 			files();
@@ -289,20 +318,18 @@ function files() {
             for (var i = 0; i < len; i++) {
                 files.push(contents[i].name);
             }
-            repoList.html("<li>" + 
+            repoList.html("<ul><li>" + 
                 files.join("</li><li>") +
                 "</li>"+
-                "</li></ul>" +
+                "</li></ul></ul>" +
 				  "<div id='readwrite'>" +
 				  "<input type='text' name='filename' " +
-				  "id='filename' size='20' />" +
-				  "<button type='button' id='read'>" +
-				  "Read File!</button><br>" +
-				  "<div><textarea name='content' " +
-				  "id='content' rows='4' cols='40'>" +
-				  "</textarea></div></div>");
+				  "id='filename' value='Repo' size='20' />" +
+				  "<button type='button' class='btn btn-default' id='readGeo'>" +
+				  "Lee</button><br>" +
+				  "</div>");
             $("#files li").click(selectFile);
-			$("#read").click(readFile);
+			$("#readGeo").click(readFile);
          }
     });
 }
@@ -313,8 +340,15 @@ function selectFile() {
 };
 
 function readFile() {
+
     repo.read('master', $("#filename").val(), function(err, data) {
-		$("#content").val(data);
+    	if(err != null){
+    		alert(error);
+    	}
+		importGames["geo"][importGames["count"]] = data;
+		$("#gameOptions").append('<option value="import'+ importGames["count"] +'">Importado '+ time() + ' </option>');
+		importGames["count"] ++;
+
     });
 };
 
@@ -327,27 +361,43 @@ function signIn(){
     });
 }
 
+function playImportGame(gameName){
+	registerGame();
+	state["import"] = true;
+	var gameNumber = parseInt(gameName.substring(6, 7)); 
+
+	beginGame(JSON.parse(importGames["geo"][gameNumber]));
+
+}
 
 $(document).ready(function() {
+	//Cambia el tamaño si es para móviles
+	if($(window).width()<980){
+        $('#map').css("height", ($(window).height() /2));    
+        $('#map').css("width", ($(window).width() /(1.1)));
+        $('.carousel').css("height", ($(window).height() /2));    
+        $('.carousel').css("width", ($(window).width() /(1.1)));
 
+    }
 
 	window.addEventListener('popstate', function(event) {
 
-        alert("JUEGO REANUDADO!");
+       if(useState){
+	       	 alert("JUEGO REANUDADO!");
 
-        $("#points").empty();
-        for(i = 0 ; i<event.state.displayPoints.length ; i++){
-        	$("#points").append(event.state.displayPoints[i]);
-        }
-        setState(event);
-        resetCarousel();
-        getImgs(tag);
-
-
+		    $("#points").empty();
+		    for(i = 0 ; i<event.state.displayPoints.length ; i++){
+		        $("#points").append(event.state.displayPoints[i]);
+		    }
+		    setState(event);
+		    resetCarousel();
+		    getImgs(tag);
+       }
+      
     });
 
 	$('.carousel').bind('slide.bs.carousel', function (e) {
-	    currentIndex = $('div.active').index() + 1;
+	    photograhps ++;
 	});
 
 	readyMap();
@@ -357,22 +407,37 @@ $(document).ready(function() {
 		if(!firstTime){
 			replace();
 		}
+		if(!fromHistory){
+			resetGame();
+		}else{
 
-		resetGame();
-		gameName = $("#gameOptions option:selected").val();
-		var game = "/json/" + gameName + ".json";
-		registerGame();
-		var interval = $("#gameDifficulty option:selected").val();
+			prepareState();
+			history.replaceState(state ,null,"game=" + gameName );
+		}
 		
+
+		var interval = $("#gameDifficulty option:selected").val();
+		historyID ++;
+		played ++;	
 		$('.carousel').on("slide.bs.carousel", function (e){
-	        $('.carousel').data("bs.carousel").options.interval =  interval;
-    	});
-		fromHistory = false;
+		    $('.carousel').data("bs.carousel").options.interval =  interval;
+	    });
+	    fromHistory = false;
 		firstTime = false;
 
-		$.getJSON( game, function( data ) {
-			beginGame(data);
-	    });
+		gameName = $("#gameOptions option:selected").val();
+
+		if(gameName.substring(0, 6) == "import"){
+			playImportGame(gameName);
+		}else{
+			var game = "json/" + gameName + ".json";
+			registerGame();
+			
+			$.getJSON( game, function( data ) {
+				beginGame(data);
+		    });
+		}
+		
 		
 	});
 
@@ -383,13 +448,33 @@ $(document).ready(function() {
 
 	$("#read").click(function(){
 		hello.init({
-			github : "178bbf1a96ea6ca75380"
+			github : "cd7198e82aa5a52743ce"
 	    },{
-			redirect_uri : 'redirect.html',
+			redirect_uri : 'http://mavilam.github.io/X-Nav-OAuth-GitHub-Fichero/redirect.html',
 			oauth_proxy : "https://auth-server.herokuapp.com/proxy",
 			scope : "publish_files",
 	    });
 
 	    signIn();
 	});
+
+
+	$('.pop').click(function(event) {
+	    var width  = 575,
+	        height = 400,
+	        left   = ($(window).width()  - width)  / 2,
+	        top    = ($(window).height() - height) / 2,
+	        url    = "https://twitter.com/intent/tweet?text=¡Prueba! http://mavilam.github.io/X-Nav-Practica-Adivina/ ",
+	        opts   = 'status=1' +
+	                 ',width='  + width  +
+	                 ',height=' + height +
+	                 ',top='    + top    +
+	                 ',left='   + left;
+	    
+	    window.open(url, 'twitter', opts);
+	 
+	    return false;
+  });
+
+
 });

@@ -12,7 +12,7 @@
             },
             "properties": {
                 "name": "New York",
-                "tag": "manhattan"
+                "tag": "manhattan, new york"
 
             }
         },
@@ -27,7 +27,7 @@
             },
             "properties": {
                 "name": "Paris",
-                "tag": "Paris"
+                "tag": "Paris, france"
             }
         },
         {
@@ -41,7 +41,77 @@
             },
             "properties": {
                 "name": "Madrid",
-                "tag": "Madrid"
+                "tag": "Madrid, spain"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    77.20902120000005,
+                    28.6139391
+                ]
+            },
+            "properties": {
+                "name": "Nueva Delhi",
+                "tag": "Nueva Delhi,India"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.38159310000003,
+                    -34.6037232
+                ]
+            },
+            "properties": {
+                "name": "Buenos Aires",
+                "tag": "Buenos Aires,Argentina"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    116.40739499999995,
+                    39.904211
+                ]
+            },
+            "properties": {
+                "name": "Pekín",
+                "tag": "Beijin, china"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    151.20699020000006,
+                    -33.8674869
+                ]
+            },
+            "properties": {
+                "name": "Sydney",
+                "tag": "Sydney, australia"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    28.047305100000017,
+                    -26.2041028
+                ]
+            },
+            "properties": {
+                "name": "Johannesburgo",
+                "tag": "Johannesburg, south africa"
             }
         }
     ]

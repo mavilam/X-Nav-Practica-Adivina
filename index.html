@@ -3,17 +3,18 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+      <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="index.css" />
       
-      <title>Final</title>
+      <title>Adivina</title>
    </head>
    <body>
 
-    <h1>ADIVINA!</h1>
+    <h1>adivina</h1>
 
     <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-8">
+      <div class="col-xs-12 col-sm-6 col-md-8" >
         <div id="map"></div>    
       </div>
       <div class="col-xs-6 col-md-4">
@@ -21,7 +22,7 @@
       
           <div class="carousel-inner" role="listbox">
             <div class="item active">
-              <img src="http://blog.popplaces.com/wp-content/uploads/2014/09/welcome.jpg" >
+              <img src="img/welcome.jpg" >
               <div class="container">
                 <div class="carousel-caption">
                   
@@ -31,10 +32,11 @@
           </div>
         </div>
 
-        <div class="control">
+        <div class="control" id="controlButtons">
           <button id="go" class="btn btn-default">Empieza</button>
           <button id="stop" class="btn btn-default">Resetea</button>
           <button id="read" class="btn btn-default">Lee GeoJson</button>
+          <button class="twitter-share-button btn btn-default pop">Tweet</button>
           <div id="blankSpace"></div>
         </div>
 
@@ -45,13 +47,12 @@
     <div class="container control" >
       <div class="row">
         <div id="pControl"  >
-          <!-- en el div de arriba class="panel panel-default" <div class="panel-heading"><h5 id="pControl">Panel de control</h5></div>
-            <div class="panel-body">-->
               <div class="col-xs-12 col-md-3">
                   
                   <h5>Elige un juego</h5>
                   <select id="gameOptions" class="form-control">
                     <option value="GrandesCiudades">Grandes ciudades del mundo</option>
+                    <option value="Monumentos">Monumentos</option>
                     <option value="Estadios">Estadios</option>
                   </select>
                   
@@ -73,19 +74,15 @@
                   <h5>History</h5>
                   <div id="history"></div>
                 </div>
-             <!-- </div>
-              
-            </div>-->
         </div>
       </div>
     </div>
 
 
-    <script src="jquery.js"></script>
-    <script src="hello.all.min.js"></script>
-    <script src="github.js"></script>
+    <script src="lib/jquery.js"></script>
+    <script src="lib/hello.all.min.js"></script>
+    <script src="lib/github.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="bootbox.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="index.js"></script>
    </body>
