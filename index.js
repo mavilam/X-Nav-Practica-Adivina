@@ -448,7 +448,7 @@ $(document).ready(function() {
 
 	$("#read").click(function(){
 		hello.init({
-			github : "addc64a9121e96235f3f"
+			github : "cd7198e82aa5a52743ce"
 	    },{
 			redirect_uri : 'http://mavilam.github.io/X-Nav-Practica-Adivina/redirect.html',
 			oauth_proxy : "https://auth-server.herokuapp.com/proxy",
